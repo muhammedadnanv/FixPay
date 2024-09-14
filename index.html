@@ -187,6 +187,7 @@
                     return;
                 }
 
+                // Create the UPI deep link
                 const upiUrl = `upi://pay?pa=${upiId}&pn=${merchant || 'Merchant'}&am=${amount}&cu=INR&tn=${note ? encodeURIComponent(note) : ''}`;
 
                 // Clear previous QR code
@@ -216,5 +217,7 @@
             });
         });
     </script>
+    <!-- Service Worker -->
+    <script src="service-worker.js"></script>
 </body>
 </html>
