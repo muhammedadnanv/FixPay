@@ -1,0 +1,21 @@
+{
+    "short_name": "FixPay",
+    "name": "FixPay QR Code Generator",
+    "description": "Generate UPI QR codes with ease.",
+    "icons": [
+        {
+            "src": "Fixpay.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "FixPay.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#007bff"
+}
