@@ -22,4 +22,4 @@ To install and run FixPay on your local system:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/fixpay-qr-code-generator.git
+  https://github.com/muhammedadnanv/FixPay.git
