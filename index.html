@@ -1,235 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Generate UPI QR Codes easily for payments.">
-    <meta name="keywords" content="UPI, QR Code, Payments, UPI QR Code Generator, Merchant Payments">
-    <title>FixPay - UPI QR Code Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FixPay - UPI QR Code Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f3f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #e0e5ec;
+    }
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <!-- Favicon -->
-    <link rel="icon" href="FixPay.png" sizes="any">
-    
-    <style>
-        /* Global Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    .container {
+      background-color: #e0e5ec;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 8px 8px 15px #c5c9cf, -8px -8px 15px #ffffff;
+      max-width: 400px;
+      width: 100%;
+    }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    h1 {
+      text-align: center;
+      color: #ff6f61;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      box-shadow: inset 4px 4px 6px #c5c9cf, inset -4px -4px 6px #ffffff;
+      border-radius: 12px;
+      padding: 10px;
+      background-color: #e0e5ec;
+    }
 
-        .container {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            color: #333;
-        }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-size: 0.9rem;
+    }
 
-        h1 {
-            font-size: 32px;
-            margin-bottom: 30px;
-            color: #007bff;
-        }
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      background-color: #e0e5ec;
+      border: none;
+      box-shadow: inset 4px 4px 6px #c5c9cf, inset -4px -4px 6px #ffffff;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #e0e5ec;
+      color: #6b5b95;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 8px 8px 15px #c5c9cf, -8px -8px 15px #ffffff;
+      transition: all 0.3s ease;
+    }
 
-        label {
-            font-size: 18px;
-            color: #555;
-            text-align: left;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
+    button:hover {
+      background-color: #88b04b;
+      box-shadow: inset 4px 4px 6px #c5c9cf, inset -4px -4px 6px #ffffff;
+    }
 
-        input, textarea {
-            padding: 12px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
+    .qr-section {
+      text-align: center;
+      margin-top: 20px;
+    }
 
-        input:focus, textarea:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.25);
-        }
+    .qr-section canvas {
+      margin-top: 10px;
+      border-radius: 12px;
+      padding: 10px;
+      background-color: #e0e5ec;
+      box-shadow: 8px 8px 15px #c5c9cf, -8px -8px 15px #ffffff;
+    }
 
-        button {
-            padding: 12px;
-            background-color: #28a745;
-            border: none;
-            color: #ffffff;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
+    .download-btn {
+      background-color: #ff6f61;
+      box-shadow: 8px 8px 15px #c5c9cf, -8px -8px 15px #ffffff;
+    }
 
-        button:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
-
-        button:active {
-            background-color: #1e7e34;
-            transform: translateY(0);
-        }
-
-        #qrCode {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #qrCode canvas {
-            border-radius: 16px;
-            border: 2px solid #007bff;
-            padding: 10px;
-        }
-
-        #downloadBtn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            border: none;
-            color: #ffffff;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-            display: none;
-        }
-
-        #downloadBtn:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        #downloadBtn:active {
-            background-color: #004494;
-            transform: translateY(0);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                max-width: 95%;
-            }
-
-            h1 {
-                font-size: 26px;
-            }
-        }
-    </style>
+    .download-btn:hover {
+      background-color: #6b5b95;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1><i class="fas fa-qrcode"></i> FixPay</h1>
-        <form id="upiForm">
-            <label for="upiId"><i class="fas fa-id-badge"></i> UPI ID</label>
-            <input type="text" id="upiId" name="upiId" placeholder="example@upi" required>
 
-            <label for="amount"><i class="fas fa-rupee-sign"></i> Amount (INR)</label>
-            <input type="number" id="amount" name="amount" min="0.01" step="0.01" placeholder="0.00" required>
+  <div class="container">
+    <h1>FixPay - UPI QR Generator</h1>
 
-            <label for="merchant"><i class="fas fa-store"></i> Merchant Name</label>
-            <input type="text" id="merchant" name="merchant" placeholder="Merchant Name (Optional)">
+    <!-- Step 1: Enter UPI Details -->
+    <label for="upi-id">UPI ID:</label>
+    <input type="text" id="upi-id" placeholder="example@upi" required>
 
-            <label for="note"><i class="fas fa-sticky-note"></i> Note (Optional)</label>
-            <textarea id="note" name="note" rows="2" placeholder="Enter a note"></textarea>
+    <label for="amount">Amount (INR):</label>
+    <input type="number" id="amount" placeholder="Amount in INR" required>
 
-            <button type="submit"><i class="fas fa-qrcode"></i> Generate QR Code</button>
-        </form>
+    <label for="merchant-name">Merchant Name (Optional):</label>
+    <input type="text" id="merchant-name" placeholder="Your name or business name">
 
-        <div id="qrCode"></div>
-        <button id="downloadBtn"><i class="fas fa-download"></i> Download QR Code</button>
+    <label for="note">Note (Optional):</label>
+    <textarea id="note" rows="3" placeholder="Payment notes"></textarea>
+
+    <!-- Step 2: Generate QR Code -->
+    <button id="generate-btn">Generate QR Code</button>
+
+    <!-- Step 3: Download QR Code -->
+    <div class="qr-section">
+      <canvas id="qr-code"></canvas>
+      <br>
+      <button id="download-btn" class="download-btn" style="display:none;">Download QR Code</button>
     </div>
+  </div>
 
-    <!-- QRCode.js Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script>
+    // QR Code Generation and Download Functionality
+    const generateBtn = document.getElementById('generate-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const qrCodeCanvas = document.getElementById('qr-code');
+    const qr = new QRious({ element: qrCodeCanvas, size: 200 });
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('upiForm');
-            const qrCodeDiv = document.getElementById('qrCode');
-            const downloadBtn = document.getElementById('downloadBtn');
+    generateBtn.addEventListener('click', function () {
+      const upiID = document.getElementById('upi-id').value;
+      const amount = document.getElementById('amount').value;
+      const merchantName = document.getElementById('merchant-name').value;
+      const note = document.getElementById('note').value;
 
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
+      if (upiID === '' || amount === '') {
+        alert('Please fill in required UPI ID and Amount fields.');
+        return;
+      }
 
-                const upiId = document.getElementById('upiId').value.trim();
-                const amount = parseFloat(document.getElementById('amount').value.trim()).toFixed(2);
-                const merchant = document.getElementById('merchant').value.trim();
-                const note = document.getElementById('note').value.trim();
+      // UPI Payment URL Format
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiID)}&am=${amount}&pn=${encodeURIComponent(merchantName)}&tn=${encodeURIComponent(note)}`;
 
-                if (!upiId || isNaN(amount) || amount <= 0) {
-                    alert('Please enter a valid UPI ID and amount.');
-                    return;
-                }
+      // Generate QR Code
+      qr.value = upiUrl;
 
-                // Generate the UPI payment link
-                const upiLink = `upi://pay?pa=${upiId}&pn=${merchant || 'Merchant'}&am=${amount}&cu=INR&tn=${encodeURIComponent(note || '')}`;
-
-                // Clear previous QR code
-                qrCodeDiv.innerHTML = '';
-
-                // Generate the QR code
-                new QRCode(qrCodeDiv, {
-                    text: upiLink,
-                    width: 256,
-                    height: 256,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                });
-
-                downloadBtn.style.display = 'inline';
-
-                // Enable QR code download
-                downloadBtn.addEventListener('click', () => {
-                    const canvas = document.querySelector('#qrCode canvas');
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
-                    link.download = 'upi-qr-code.png';
-                    link.click();
-                });
-            });
-        });
-    </script>
-    <script src="donation-widget.js" defer></script>
-    <script>
-    // Initialize the donation widget
-    window.addEventListener('load', function() {
-        createDonationWidget('adnanmuhammad4393@okicici', 120, 'Supporting Fixpay');
+      // Show download button
+      downloadBtn.style.display = 'block';
     });
-</script>
+
+    // Download QR Code as PNG
+    downloadBtn.addEventListener('click', function () {
+      const link = document.createElement('a');
+      link.download = 'upi-qr-code.png';
+      link.href = qrCodeCanvas.toDataURL();
+      link.click();
+    });
+  </script>
+  <script src="donation-widget.js" defer></script>
+  <script>
+    // Initialize the donation widget
+    window.addEventListener('load', function () {
+      createDonationWidget('adnanmuhammad4393@okicici', 120, 'Supporting Fixpay');
+    });
+  </script>
 </body>
+
 </html>
